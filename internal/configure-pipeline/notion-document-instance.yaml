@@ -1,0 +1,7 @@
+apiVersion: marketplace.kratix.io/v1alpha1
+kind: slack
+metadata:
+  name: my-doc
+  namespace: default
+spec:
+  name: "Shiny Doc"

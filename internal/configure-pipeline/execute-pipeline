@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+set -xe
+
+NOTION_API_KEY="$(kubectl get secret notion-api-key -o=jsonpath='{.data.url}' | base64 -d)"
+page_name="$(yq eval '.spec.name' /kratix/input/object.yaml)"
+database_id="$(kubectl get secret notion-api-key -o=jsonpath='{.data.url}' | base64 -d)"
+
+curl 'https://api.notion.com/v1/pages' \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2022-06-28" \
+  --data '{
+  "parent": { "database_id": $database_id },
+  "icon": {
+  	"emoji": "📓"
+  },
+  "properties": {
+  	"Title": "$page_name",
+  },
+}'
