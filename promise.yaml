@@ -8,7 +8,7 @@ spec:
     apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
-      name: notion.promise.syntasso.io
+      name: notions.example.promise.syntasso.io
     spec:
       group: example.promise.syntasso.io
       scope: Namespaced
@@ -31,3 +31,14 @@ spec:
                       type: string
                       description: |
                         The document name
+  workflows:
+    resource:
+      configure:
+        - apiVersion: platform.kratix.io/v1alpha1
+          kind: Pipeline
+          metadata:
+            name: instance-configure
+          spec:
+            containers:
+              - name: create-notion-instance
+                image: kratix-workshop/notion-configure-pipeline:dev
