@@ -1,7 +1,7 @@
-apiVersion: marketplace.kratix.io/v1alpha1
-kind: slack
+apiVersion: example.promise.syntasso.io/v1
+kind: notion
 metadata:
   name: my-doc
   namespace: default
 spec:
-  name: "Shiny Doc"
+  name: "Brand new doc"
