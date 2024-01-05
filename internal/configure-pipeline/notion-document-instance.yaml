@@ -1,7 +1,7 @@
 apiVersion: example.promise.syntasso.io/v1
 kind: notion
 metadata:
-  name: my-doc
+  name: page
   namespace: default
 spec:
-  name: "Brand new doc"
+  name: "Promise-provided Page"
