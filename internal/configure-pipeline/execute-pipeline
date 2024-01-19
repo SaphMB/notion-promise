@@ -17,4 +17,20 @@ curl 'https://api.notion.com/v1/pages' \
       "title": [{ "type": "text", "text": { "content":  "'"$page_name"'" } }]
 		}
 	}
-}'
+}' > response.json
+
+id=$(jq -r '.id' response.json)
+url=$(jq -r '.url' response.json)
+
+export id
+export url
+
+cat /tmp/transfer/notion-document-instance.yaml | yq eval '.spec.name = env(page_name)' > /kratix/output/notion-document-instance.yaml
+
+cat <<EOF > /kratix/metadata/status.yaml
+message: Notion page provisioned at url: $url
+pageDetails:
+  title: ${page_name}
+  id: ${id}
+  url: ${url}
+EOF
