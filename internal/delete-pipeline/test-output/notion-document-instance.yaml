@@ -1,0 +1,13 @@
+apiVersion: marketplace.kratix.io/v1alpha1
+kind: notion
+metadata:
+  name: my-doc
+  namespace: default
+spec:
+  name: "Shiny Doc"
+status:
+  message: 'Notion page provisioned at url: https://www.notion.so/Promise-provided-Page-ef3801c1-5693-4fef-8e61-fb9b9b70c337'
+  pageDetails:
+    id: ef3801c1-5693-4fef-8e61-fb9b9b70c337
+    title: Promise-provided Page
+    url: https://www.notion.so/Promise-provided-Page-ef3801c1-5693-4fef-8e61-fb9b9b70c337

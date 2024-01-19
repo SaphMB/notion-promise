@@ -1,0 +1,13 @@
+apiVersion: marketplace.kratix.io/v1alpha1
+kind: notion
+metadata:
+  name: my-page
+  namespace: default
+spec:
+  name: "Shiny New Notion Page"
+status:
+  message: 'Notion page provisioned at url: "https://www.notion.so/Shiny-New-Notion-Page-aa3bbd0e96d34acf92dce67d6e16e09b"'
+  pageDetails:
+    title: Shiny New Notion Page
+    id: aa3bbd0e-96d3-4acf-92dc-e67d6e16e09b
+    url: "https://www.notion.so/Shiny-New-Notion-Page-aa3bbd0e96d34acf92dce67d6e16e09b"

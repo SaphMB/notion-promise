@@ -1,0 +1,7 @@
+apiVersion: example.promise.syntasso.io/v1
+kind: notion
+metadata:
+  name: page
+  namespace: default
+spec:
+  name: "Promise-provided Page"

@@ -42,3 +42,12 @@ spec:
             containers:
               - name: create-notion-instance
                 image: kratix-workshop/notion-configure-pipeline:dev
+      delete:
+        - apiVersion: platform.kratix.io/v1alpha1
+          kind: Pipeline
+          metadata:
+            name: instance-delete
+          spec:
+            containers:
+              - name: delete-notion-instance
+                image: kratix-workshop/notion-delete-pipeline:dev

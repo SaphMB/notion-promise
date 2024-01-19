@@ -2,33 +2,42 @@
 
 set -xeu
 
-NOTION_API_KEY="$(kubectl get secret notion-api-key -o=jsonpath='{.data.key}' | base64 -d)"
-page_name="$(yq eval '.spec.name' /kratix/input/object.yaml)"
-page_id="$(kubectl get secret notion-api-key -o=jsonpath='{.data.key}' | base64 -d)"
+# export NOTION_API_KEY="$(kubectl get secret notion-api-key -o=jsonpath='{.data.key}' | base64 -d)"
+export NOTION_API_KEY="secret_Cr69ThgW6hSJtwbEpHILoBkCl9FOBTm01HDVn7qZ2kQ"
+export page_name=$(yq eval '.spec.name' /kratix/input/object.yaml)
+# export page_id="$(kubectl get secret notion-page-id -o=jsonpath='{.data.id}' | base64 -d)"
+export parent_page_id='618af209c41042fe88b919da485cecb3'
+export existing_page_id=$(yq eval '.status.pageDetails.id' /kratix/input/object.yaml)
+export existing_page_url=$(yq eval '.status.pageDetails.url' /kratix/input/object.yaml)
 
-curl 'https://api.notion.com/v1/pages' \
-  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
-  -H "Content-Type: application/json" \
-  -H "Notion-Version: 2022-06-28" \
-  --data '{
-  "parent": { "page_id": "'"$page_id"'"},
-  "properties": {
-		"title": {
-      "title": [{ "type": "text", "text": { "content":  "'"$page_name"'" } }]
-		}
-	}
-}' > response.json
+if [ "$existing_page_id" != "null" ]
+then
+  
+  cat /tmp/transfer/notion-document-instance.yaml | yq eval '.spec.name = env(page_name)' > /kratix/output/notion-document-instance.yaml
+  export id=$existing_page_id
+  export url=$existing_page_url
+else
+  curl 'https://api.notion.com/v1/pages' \
+    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+    -H "Content-Type: application/json" \
+    -H "Notion-Version: 2022-06-28" \
+    --data '{
+    "parent": { "page_id": "'"$parent_page_id"'"},
+    "properties": {
+      "title": {
+        "title": [{ "type": "text", "text": { "content":  "'"$page_name"'" } }]
+      }
+    }
+  }' > response.json
 
-id=$(jq -r '.id' response.json)
-url=$(jq -r '.url' response.json)
-
-export id
-export url
+  export id=$(jq -r '.id' response.json)
+  export url=$(jq '.url' response.json)
+fi
 
 cat /tmp/transfer/notion-document-instance.yaml | yq eval '.spec.name = env(page_name)' > /kratix/output/notion-document-instance.yaml
 
 cat <<EOF > /kratix/metadata/status.yaml
-message: Notion page provisioned at url: $url
+message: 'Notion page provisioned at url: $url'
 pageDetails:
   title: ${page_name}
   id: ${id}
